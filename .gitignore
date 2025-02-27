@@ -1,0 +1,47 @@
+bin/
+obj/
+/packages/
+riderModule.iml
+/_ReSharper.Caches/
+
+# .NET and MAUI Build Outputs
+artifacts/
+
+# Visual Studio Specific
+.vs/
+*.user
+*.suo
+*.sln.docstates
+
+# Rider (JetBrains) Specific
+.idea/
+*.sln.iml
+
+# Test Results
+TestResults/
+
+# Operating System Generated Files
+.DS_Store
+Thumbs.db
+
+# Temporary Files and Logs
+*.tmp
+*~
+*.log
+*.bak
+*.swp
+
+# Windows App Packages (MAUI Windows Target)
+AppPackages/
+BundleArtifacts/
+*.appx
+*.appxbundle
+*.appxupload
+
+# Visual Studio and .NET Cache Files
+*.cache
+*.VC.db
+*.VC.opendb
+
+# NuGet Package Files
+*.nupkg
