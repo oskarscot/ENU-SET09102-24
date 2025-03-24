@@ -55,4 +55,20 @@ namespace SET09102.Services.Administration
             await _connection.CloseAsync();
         }
     }
+    public async Task AddUserAsync(User user)
+{
+    if (string.IsNullOrEmpty(user.Username))
+        throw new ArgumentException("Username cannot be empty.");
+
+    user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(user.PasswordHash); // Hash password
+    using var cmd = new SqlCommand(
+        "INSERT INTO Users (Username, PasswordHash, RoleId) VALUES (@u, @p, @r)", 
+        _connection);
+    cmd.Parameters.AddWithValue("@u", user.Username);
+    cmd.Parameters.AddWithValue("@p", user.PasswordHash);
+    cmd.Parameters.AddWithValue("@r", user.RoleId);
+    await _connection.OpenAsync();
+    await cmd.ExecuteNonQueryAsync();
+    await _connection.CloseAsync();
+}
 }
