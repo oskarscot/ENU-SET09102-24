@@ -3,10 +3,26 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="SET09102.Administrator.Pages.LoginPage"
              Title="Login">
-    <StackLayout>
-        <Entry Placeholder="Username" Text="{Binding Username}" />
-        <Entry Placeholder="Password" IsPassword="True" Text="{Binding Password}" />
-        <Label Text="{Binding LockoutMessage}" IsVisible="{Binding IsLockedOut}" />
-        <Button Text="Login" Command="{Binding LoginCommand}" />
+    <StackLayout Padding="20">
+        <!-- Username Input -->
+        <Label Text="Username" FontSize="Medium" />
+        <Entry Placeholder="Enter username" Text="{Binding Username}" />
+
+        <!-- Password Input -->
+        <Label Text="Password" FontSize="Medium" />
+        <Entry Placeholder="Enter password" IsPassword="True" Text="{Binding Password}" />
+
+        <!-- Lockout Message -->
+        <Label Text="{Binding LockoutMessage}" 
+               TextColor="Red" 
+               IsVisible="{Binding IsLockedOut}" 
+               HorizontalOptions="Center" />
+
+        <!-- Login Button -->
+        <Button Text="Login" 
+                Command="{Binding LoginCommand}" 
+                BackgroundColor="Blue" 
+                TextColor="White" 
+                Margin="0,20,0,0" />
     </StackLayout>
 </ContentPage>

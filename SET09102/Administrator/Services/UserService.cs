@@ -33,6 +33,24 @@ namespace SET09102.Services.Administration
             return users;
         }
 
+        public async Task<List<Role>> GetAllRolesAsync()
+        {
+            var roles = new List<Role>();
+            using var cmd = new SqlCommand("SELECT Id, Name FROM Roles", _connection);
+            await _connection.OpenAsync();
+            using var reader = await cmd.ExecuteReaderAsync();
+            while (await reader.ReadAsync())
+            {
+                roles.Add(new Role
+                {
+                    Id = reader.GetInt32(0),
+                    Name = reader.GetString(1)
+                });
+            }
+            await _connection.CloseAsync();
+            return roles;
+        }
+
         public async Task AddUserAsync(User user)
         {
             if (string.IsNullOrEmpty(user.Username))

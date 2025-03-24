@@ -49,8 +49,8 @@ namespace SET09102.Administrator.Pages
             }
         });
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        public new event PropertyChangedEventHandler PropertyChanged;
+        private new void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }

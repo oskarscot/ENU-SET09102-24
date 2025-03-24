@@ -17,30 +17,32 @@ namespace SET09102.Services.Administration
             _connection = connection;
         }
 
-        public async Task<bool> LoginAsync(string username, string password)
-        {
-            if (_lockoutEnd.HasValue && DateTime.Now < _lockoutEnd)
-                return false;
+public async Task<bool> LoginAsync(string username, string password)
+{
+    if (_lockoutEnd.HasValue && DateTime.Now < _lockoutEnd)
+        return false;
 
-            using var cmd = new SqlCommand("SELECT PasswordHash FROM Users WHERE Username = @u", _connection);
-            cmd.Parameters.AddWithValue("@u", username);
-            await _connection.OpenAsync();
-            var hash = (string)await cmd.ExecuteScalarAsync();
-            await _connection.CloseAsync();
+    using var cmd = new SqlCommand("SELECT PasswordHash FROM Users WHERE Username = @u", _connection);
+    cmd.Parameters.AddWithValue("@u", username);
+    await _connection.OpenAsync();
+    object? result = await cmd.ExecuteScalarAsync(); // Store as object?
+    await _connection.CloseAsync();
 
-            if (hash != null && BCrypt.Net.BCrypt.Verify(password, hash))
-            {
-                _failedAttempts = 0;
-                await LogAttemptAsync(username, true);
-                return true;
-            }
+    string? hash = result as string; // Safely convert to string, will be null if result is null
 
-            _failedAttempts++;
-            await LogAttemptAsync(username, false);
-            if (_failedAttempts >= 5)
-                _lockoutEnd = DateTime.Now.AddMinutes(10);
-            return false;
-        }
+    if (hash != null && BCrypt.Net.BCrypt.Verify(password, hash))
+    {
+        _failedAttempts = 0;
+        await LogAttemptAsync(username, true);
+        return true;
+    }
+
+    _failedAttempts++;
+    await LogAttemptAsync(username, false);
+    if (_failedAttempts >= 5)
+        _lockoutEnd = DateTime.Now.AddMinutes(10);
+    return false;
+}
 
         private async Task LogAttemptAsync(string username, bool success)
         {
