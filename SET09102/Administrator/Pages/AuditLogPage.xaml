@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SET09102.Administrator.Pages.AuditLogPage"
+             Title="Audit Logs">
+    <Grid RowDefinitions="Auto,Auto,*" Padding="20">
+        <!-- Filters -->
+        <HorizontalStackLayout Grid.Row="0" Spacing="10" Margin="0,0,0,20">
+            <DatePicker x:Name="StartDatePicker" />
+            <DatePicker x:Name="EndDatePicker" />
+            <Button Text="Filter" Command="{Binding FilterCommand}"
+                    BackgroundColor="#512BD4" TextColor="White"/>
+            <Button Text="Clear" Command="{Binding ClearFilterCommand}"
+                    BackgroundColor="Gray" TextColor="White"/>
+        </HorizontalStackLayout>
+
+        <!-- Event Type Filter -->
+        <HorizontalStackLayout Grid.Row="1" Spacing="10" Margin="0,0,0,20">
+            <Label Text="Event Type:" VerticalOptions="Center"/>
+            <Picker x:Name="EventTypePicker" 
+                    ItemsSource="{Binding EventTypes}"
+                    SelectedItem="{Binding SelectedEventType}"/>
+        </HorizontalStackLayout>
+
+        <!-- Logs List -->
+        <CollectionView Grid.Row="2" ItemsSource="{Binding AuditLogs}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Grid Padding="10" ColumnDefinitions="Auto,*,Auto">
+                        <Label Text="{Binding Timestamp, StringFormat='{0:yyyy-MM-dd HH:mm:ss}'}" 
+                               Grid.Column="0" FontSize="Small"/>
+                        <VerticalStackLayout Grid.Column="1" Margin="10,0">
+                            <Label Text="{Binding EventType}" FontAttributes="Bold"/>
+                            <Label Text="{Binding Description}" FontSize="Small"/>
+                        </VerticalStackLayout>
+                        <Label Text="{Binding UserId, StringFormat='User: {0}'}" 
+                               Grid.Column="2" FontSize="Small" TextColor="Gray"/>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+</ContentPage> 

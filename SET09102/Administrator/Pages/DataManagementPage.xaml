@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SET09102.Administrator.Pages.DataManagementPage"
+             Title="Data Management">
+    <Grid RowDefinitions="Auto,Auto,*" Padding="20">
+        <!-- Backup Controls -->
+        <VerticalStackLayout Grid.Row="0" Spacing="10">
+            <Label Text="Backup Management" FontSize="Large" FontAttributes="Bold"/>
+            <HorizontalStackLayout Spacing="10">
+                <Button Text="Create Backup" Command="{Binding CreateBackupCommand}"
+                        BackgroundColor="#512BD4" TextColor="White"/>
+                <Button Text="Apply Retention Policy" Command="{Binding ApplyRetentionPolicyCommand}"
+                        BackgroundColor="#2196F3" TextColor="White"/>
+            </HorizontalStackLayout>
+            <Entry Placeholder="Backup Description (optional)" 
+                   Text="{Binding BackupDescription}"/>
+        </VerticalStackLayout>
+
+        <!-- Export Controls -->
+        <VerticalStackLayout Grid.Row="1" Spacing="10" Margin="0,20">
+            <Label Text="Data Export" FontSize="Large" FontAttributes="Bold"/>
+            <HorizontalStackLayout Spacing="10">
+                <Picker ItemsSource="{Binding DataTypes}"
+                        SelectedItem="{Binding SelectedDataType}"
+                        WidthRequest="200"/>
+                <Button Text="Export" Command="{Binding ExportDataCommand}"
+                        BackgroundColor="#4CAF50" TextColor="White"/>
+                <Button Text="Import" Command="{Binding ImportDataCommand}"
+                        BackgroundColor="#FF9800" TextColor="White"/>
+            </HorizontalStackLayout>
+        </VerticalStackLayout>
+
+        <!-- Backup List -->
+        <CollectionView Grid.Row="2" ItemsSource="{Binding BackupFiles}">
+            <CollectionView.Header>
+                <Label Text="Available Backups" FontSize="Large" FontAttributes="Bold" Margin="0,20,0,10"/>
+            </CollectionView.Header>
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <SwipeView>
+                        <SwipeView.RightItems>
+                            <SwipeItems>
+                                <SwipeItem Text="Restore" BackgroundColor="#512BD4"
+                                         Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.RestoreBackupCommand}"
+                                         CommandParameter="{Binding .}"/>
+                                <SwipeItem Text="Delete" BackgroundColor="#F44336"
+                                         Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.DeleteBackupCommand}"
+                                         CommandParameter="{Binding .}"/>
+                            </SwipeItems>
+                        </SwipeView.RightItems>
+                        <Grid Padding="10">
+                            <Label Text="{Binding .}" FontSize="Medium"/>
+                        </Grid>
+                    </SwipeView>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+</ContentPage> 

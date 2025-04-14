@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SET09102.Administrator.Pages.SensorManagementPage"
+             Title="Sensor Management">
+    <Grid RowDefinitions="Auto,*" Padding="20">
+        <!-- Sensor List -->
+        <CollectionView Grid.Row="1" ItemsSource="{Binding Sensors}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <SwipeView>
+                        <SwipeView.RightItems>
+                            <SwipeItems>
+                                <SwipeItem Text="Configure" BackgroundColor="#512BD4"
+                                         Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.ConfigureCommand}"
+                                         CommandParameter="{Binding .}"/>
+                                <SwipeItem Text="Update Firmware" BackgroundColor="#2196F3"
+                                         Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.UpdateFirmwareCommand}"
+                                         CommandParameter="{Binding .}"/>
+                                <SwipeItem Text="Schedule Maintenance" BackgroundColor="#4CAF50"
+                                         Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.ScheduleMaintenanceCommand}"
+                                         CommandParameter="{Binding .}"/>
+                            </SwipeItems>
+                        </SwipeView.RightItems>
+                        <Grid Padding="10" ColumnDefinitions="*,Auto,Auto">
+                            <VerticalStackLayout Grid.Column="0">
+                                <Label Text="{Binding Name}" FontAttributes="Bold"/>
+                                <Label Text="{Binding Type}" FontSize="Small"/>
+                                <Label Text="{Binding Location}" FontSize="Small" TextColor="Gray"/>
+                                <Label Text="{Binding Status}" FontSize="Small" TextColor="{Binding Status, Converter={StaticResource StatusColorConverter}}"/>
+                                <Label Text="{Binding FirmwareVersion, StringFormat='Firmware: {0}'}" FontSize="Small"/>
+                                <Label Text="{Binding LastMaintenance, StringFormat='Last Maintenance: {0:yyyy-MM-dd}'}" FontSize="Small"/>
+                            </VerticalStackLayout>
+                            <Button Grid.Column="1" Text="Edit" 
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.EditCommand}"
+                                    CommandParameter="{Binding .}"
+                                    BackgroundColor="#512BD4" TextColor="White"
+                                    Margin="5,0"/>
+                            <Button Grid.Column="2" Text="Toggle" 
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.ToggleCommand}"
+                                    CommandParameter="{Binding .}"
+                                    BackgroundColor="{Binding IsActive, Converter={StaticResource ActiveColorConverter}}"
+                                    TextColor="White"
+                                    Margin="5,0"/>
+                        </Grid>
+                    </SwipeView>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+</ContentPage> 

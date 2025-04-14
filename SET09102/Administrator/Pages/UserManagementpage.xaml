@@ -3,21 +3,45 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="SET09102.Administrator.Pages.UserManagementPage"
              Title="User Management">
-    <StackLayout>
-        <CollectionView ItemsSource="{Binding Users}">
+    <Grid RowDefinitions="Auto,*" Padding="20">
+        <!-- Add User Form -->
+        <VerticalStackLayout Grid.Row="0" Spacing="10" Margin="0,0,0,20">
+            <Label Text="Add New User" FontSize="20" FontAttributes="Bold"/>
+            <Entry Placeholder="Username" Text="{Binding NewUsername}"/>
+            <Entry Placeholder="Email" Text="{Binding NewEmail}" Keyboard="Email"/>
+            <Picker Title="Select Role" ItemsSource="{Binding Roles}" 
+                    ItemDisplayBinding="{Binding Name}"
+                    SelectedItem="{Binding NewRole}"/>
+            <Button Text="Add User" Command="{Binding AddUserCommand}"
+                    BackgroundColor="#512BD4" TextColor="White"/>
+        </VerticalStackLayout>
+
+        <!-- Users List -->
+        <CollectionView Grid.Row="1" ItemsSource="{Binding Users}">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <Grid>
-                        <Label Text="{Binding Username}" Grid.Column="0" />
-                        <Label Text="{Binding Role.Name}" Grid.Column="1" />
-                        <Button Text="Edit" Grid.Column="2" Command="{Binding EditCommand}" CommandParameter="{Binding .}" />
-                        <Button Text="Delete" Grid.Column="3" Command="{Binding DeleteCommand}" CommandParameter="{Binding .}" />
-                    </Grid>
+                    <SwipeView>
+                        <SwipeView.RightItems>
+                            <SwipeItems>
+                                <SwipeItem Text="Delete" BackgroundColor="Red"
+                                         Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.DeleteUserCommand}"
+                                         CommandParameter="{Binding .}"/>
+                            </SwipeItems>
+                        </SwipeView.RightItems>
+                        <Grid Padding="10" ColumnDefinitions="*,Auto">
+                            <VerticalStackLayout Grid.Column="0">
+                                <Label Text="{Binding Username}" FontAttributes="Bold"/>
+                                <Label Text="{Binding Email}" FontSize="Small"/>
+                                <Label Text="{Binding Role.Name}" FontSize="Small" TextColor="Gray"/>
+                            </VerticalStackLayout>
+                            <Button Grid.Column="1" Text="Edit" 
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.EditUserCommand}"
+                                    CommandParameter="{Binding .}"
+                                    BackgroundColor="#512BD4" TextColor="White"/>
+                        </Grid>
+                    </SwipeView>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
-        <Entry Placeholder="New Username" Text="{Binding NewUsername}" />
-        <Picker ItemsSource="{Binding Roles}" SelectedItem="{Binding NewRole}" />
-        <Button Text="Add User" Command="{Binding AddUserCommand}" />
-    </StackLayout>
+    </Grid>
 </ContentPage>
