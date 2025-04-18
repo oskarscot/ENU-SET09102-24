@@ -3,11 +3,24 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="SET09102.Administrator.Pages.SensorConfigPage"
              Title="Sensor Configuration">
-    <StackLayout>
-        <Picker ItemsSource="{Binding Sensors}" SelectedItem="{Binding SelectedSensor}" />
-        <Entry Text="{Binding SelectedSensor.PollingInterval}" Placeholder="Polling Interval (s)" />
-        <Button Text="Update Config" Command="{Binding UpdateConfigCommand}" />
-        <ProgressBar Progress="{Binding FirmwareProgress}" IsVisible="{Binding IsUpdatingFirmware}" />
-        <Button Text="Update Firmware" Command="{Binding UpdateFirmwareCommand}" IsEnabled="{Binding !IsUpdatingFirmware}" />
+    <StackLayout Padding="20">
+        <Picker ItemsSource="{Binding Sensors}"
+                SelectedItem="{Binding SelectedSensor}"
+                Title="Select Sensor"/>
+        
+        <Entry Text="{Binding SelectedSensor.PollingInterval}"
+               Placeholder="Polling Interval"
+               IsEnabled="{Binding CanUpdateConfig}"/>
+        
+        <Button Text="Update Configuration"
+                Command="{Binding UpdateConfigCommand}"
+                IsEnabled="{Binding CanUpdateConfig}"/>
+        
+        <Button Text="Update Firmware"
+                Command="{Binding UpdateFirmwareCommand}"
+                IsEnabled="{Binding CanUpdateConfig, Converter={StaticResource InverseBoolConverter}}"/>
+        
+        <ProgressBar Progress="{Binding FirmwareProgress}"
+                     IsVisible="{Binding IsUpdatingFirmware}"/>
     </StackLayout>
 </ContentPage>

@@ -4,12 +4,40 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:SET09102"
+    xmlns:admin="clr-namespace:SET09102.Administrator.Pages"
     Shell.FlyoutBehavior="Flyout"
     Title="SET09102">
 
     <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
+        Title="Login"
+        ContentTemplate="{DataTemplate admin:LoginPage}"
+        Route="LoginPage" />
+
+    <FlyoutItem Title="Administration" IsVisible="False">
+        <ShellContent
+            Title="User Management"
+            ContentTemplate="{DataTemplate admin:UserManagementPage}"
+            Route="UserManagementPage" />
+        
+        <ShellContent
+            Title="Sensor Management"
+            ContentTemplate="{DataTemplate admin:SensorManagementPage}"
+            Route="SensorManagementPage" />
+        
+        <ShellContent
+            Title="Sensor Configuration"
+            ContentTemplate="{DataTemplate admin:SensorConfigPage}"
+            Route="SensorConfigPage" />
+        
+        <ShellContent
+            Title="Data Management"
+            ContentTemplate="{DataTemplate admin:DataManagementPage}"
+            Route="DataManagementPage" />
+        
+        <ShellContent
+            Title="Audit Log"
+            ContentTemplate="{DataTemplate admin:AuditLogPage}"
+            Route="AuditLogPage" />
+    </FlyoutItem>
 
 </Shell>
