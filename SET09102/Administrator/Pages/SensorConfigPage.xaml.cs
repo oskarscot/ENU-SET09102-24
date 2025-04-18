@@ -11,15 +11,32 @@ namespace SET09102.Administrator.Pages
     {
         private readonly ConfigService _configService;
         public ObservableCollection<SensorConfig> Sensors { get; set; }
-        public SensorConfig SelectedSensor { get; set; }
+        private SensorConfig _selectedSensor;
+        public SensorConfig SelectedSensor
+        {
+            get => _selectedSensor;
+            set
+            {
+                if (_selectedSensor != value)
+                {
+                    _selectedSensor = value;
+                    OnPropertyChanged();
+                    // Notify that CanUpdateConfig might have changed
+                    OnPropertyChanged(nameof(CanUpdateConfig));
+                }
+            }
+        }
         public double FirmwareProgress { get; set; }
         public bool IsUpdatingFirmware { get; set; }
+
+        public bool CanUpdateConfig => SelectedSensor != null;
 
         public SensorConfigPage(ConfigService configService)
         {
             InitializeComponent();
             _configService = configService;
             Sensors = new ObservableCollection<SensorConfig>();
+            BindingContext = this;
             _configService.OnProgressUpdated += progress => { FirmwareProgress = progress / 100.0; OnPropertyChanged(nameof(FirmwareProgress)); };
             LoadSensors();
         }

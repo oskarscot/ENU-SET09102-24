@@ -6,7 +6,7 @@ using System.Windows.Input;
 
 namespace SET09102.Administrator.Pages
 {
-    public partial class AuditLogPage : ContentPage, INotifyPropertyChanged
+    public partial class AuditLogPage : ContentPage
     {
         private readonly AuditService _auditService;
         public ObservableCollection<AuditLog> AuditLogs { get; set; }
@@ -76,12 +76,6 @@ namespace SET09102.Administrator.Pages
             OnPropertyChanged(nameof(EndDate));
             OnPropertyChanged(nameof(SelectedEventType));
             await LoadAuditLogs();
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 } 
