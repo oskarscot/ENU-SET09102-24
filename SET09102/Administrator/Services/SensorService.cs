@@ -3,17 +3,30 @@ using SET09102.Administrator.Models;
 
 namespace SET09102.Administrator.Services
 {
+    /// <summary>
+    /// Service responsible for managing sensor operations including configuration, firmware updates,
+    /// maintenance scheduling, and status management.
+    /// </summary>
     public class SensorService
     {
         private readonly string _connectionString;
         private readonly AuditService _auditService;
 
+        /// <summary>
+        /// Initializes a new instance of the SensorService class.
+        /// </summary>
+        /// <param name="connectionString">The database connection string.</param>
+        /// <param name="auditService">The audit service for logging operations.</param>
         public SensorService(string connectionString, AuditService auditService)
         {
             _connectionString = connectionString;
             _auditService = auditService;
         }
 
+        /// <summary>
+        /// Retrieves all sensors from the database.
+        /// </summary>
+        /// <returns>A list of all sensors in the system.</returns>
         public async Task<List<Sensor>> GetAllSensorsAsync()
         {
             var sensors = new List<Sensor>();
@@ -46,6 +59,11 @@ namespace SET09102.Administrator.Services
             return sensors;
         }
 
+        /// <summary>
+        /// Retrieves a specific sensor by its ID.
+        /// </summary>
+        /// <param name="id">The unique identifier of the sensor.</param>
+        /// <returns>The sensor if found, null otherwise.</returns>
         public async Task<Sensor> GetSensorByIdAsync(int id)
         {
             using var connection = new SqlConnection(_connectionString);
@@ -79,6 +97,12 @@ namespace SET09102.Administrator.Services
             return null;
         }
 
+        /// <summary>
+        /// Updates the configuration of a specific sensor.
+        /// </summary>
+        /// <param name="sensorId">The ID of the sensor to update.</param>
+        /// <param name="configuration">The new configuration settings for the sensor.</param>
+        /// <returns>A task representing the asynchronous operation.</returns>
         public async Task UpdateSensorConfigurationAsync(int sensorId, string configuration)
         {
             using var connection = new SqlConnection(_connectionString);
@@ -102,6 +126,12 @@ namespace SET09102.Administrator.Services
             );
         }
 
+        /// <summary>
+        /// Updates the firmware version of a specific sensor.
+        /// </summary>
+        /// <param name="sensorId">The ID of the sensor to update.</param>
+        /// <param name="newVersion">The new firmware version.</param>
+        /// <returns>A task representing the asynchronous operation.</returns>
         public async Task UpdateSensorFirmwareAsync(int sensorId, string newVersion)
         {
             using var connection = new SqlConnection(_connectionString);
@@ -125,6 +155,12 @@ namespace SET09102.Administrator.Services
             );
         }
 
+        /// <summary>
+        /// Schedules maintenance for a specific sensor.
+        /// </summary>
+        /// <param name="sensorId">The ID of the sensor to schedule maintenance for.</param>
+        /// <param name="maintenanceDate">The date when maintenance should be performed.</param>
+        /// <returns>A task representing the asynchronous operation.</returns>
         public async Task ScheduleMaintenanceAsync(int sensorId, DateTime maintenanceDate)
         {
             using var connection = new SqlConnection(_connectionString);
@@ -145,6 +181,10 @@ namespace SET09102.Administrator.Services
             );
         }
 
+        /// <summary>
+        /// Retrieves all scheduled maintenance events.
+        /// </summary>
+        /// <returns>A list of all maintenance schedules in the system.</returns>
         public async Task<List<MaintenanceSchedule>> GetMaintenanceScheduleAsync()
         {
             var schedules = new List<MaintenanceSchedule>();
@@ -172,6 +212,12 @@ namespace SET09102.Administrator.Services
             return schedules;
         }
 
+        /// <summary>
+        /// Updates the operational status of a specific sensor.
+        /// </summary>
+        /// <param name="sensorId">The ID of the sensor to update.</param>
+        /// <param name="status">The new status of the sensor.</param>
+        /// <returns>A task representing the asynchronous operation.</returns>
         public async Task UpdateSensorStatusAsync(int sensorId, string status)
         {
             using var connection = new SqlConnection(_connectionString);
@@ -196,27 +242,95 @@ namespace SET09102.Administrator.Services
         }
     }
 
+    /// <summary>
+    /// Represents a sensor in the system with its properties and current state.
+    /// </summary>
     public class Sensor
     {
+        /// <summary>
+        /// The unique identifier of the sensor.
+        /// </summary>
         public int Id { get; set; }
+
+        /// <summary>
+        /// The name of the sensor.
+        /// </summary>
         public string Name { get; set; }
+
+        /// <summary>
+        /// The type of the sensor (e.g., temperature, humidity, pressure).
+        /// </summary>
         public string Type { get; set; }
+
+        /// <summary>
+        /// The physical location of the sensor.
+        /// </summary>
         public string Location { get; set; }
+
+        /// <summary>
+        /// The current operational status of the sensor.
+        /// </summary>
         public string Status { get; set; }
+
+        /// <summary>
+        /// The date of the last maintenance performed on the sensor.
+        /// </summary>
         public DateTime? LastMaintenance { get; set; }
+
+        /// <summary>
+        /// The current firmware version installed on the sensor.
+        /// </summary>
         public string FirmwareVersion { get; set; }
+
+        /// <summary>
+        /// The current configuration settings of the sensor.
+        /// </summary>
         public string Configuration { get; set; }
+
+        /// <summary>
+        /// Indicates whether the sensor is currently active.
+        /// </summary>
         public bool IsActive { get; set; }
+
+        /// <summary>
+        /// The date when the sensor was first added to the system.
+        /// </summary>
         public DateTime CreatedAt { get; set; }
+
+        /// <summary>
+        /// The date when the sensor was last updated.
+        /// </summary>
         public DateTime LastUpdated { get; set; }
     }
 
+    /// <summary>
+    /// Represents a scheduled maintenance event for a sensor.
+    /// </summary>
     public class MaintenanceSchedule
     {
+        /// <summary>
+        /// The unique identifier of the maintenance schedule.
+        /// </summary>
         public int Id { get; set; }
+
+        /// <summary>
+        /// The ID of the sensor that requires maintenance.
+        /// </summary>
         public int SensorId { get; set; }
+
+        /// <summary>
+        /// The name of the sensor that requires maintenance.
+        /// </summary>
         public string SensorName { get; set; }
+
+        /// <summary>
+        /// The date when maintenance is scheduled to be performed.
+        /// </summary>
         public DateTime ScheduledDate { get; set; }
+
+        /// <summary>
+        /// The current status of the maintenance schedule.
+        /// </summary>
         public string Status { get; set; }
     }
 } 
